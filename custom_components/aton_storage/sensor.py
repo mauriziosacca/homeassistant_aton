@@ -132,7 +132,8 @@ class BatteryStatus(SensorEntity, CoordinatorEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        self._attr_native_value = self.coordinator.api.status.battery_status
+        # Limit battery_status to a maximum of 100 and convert it to an integer
+        self._attr_native_value = min(100, int(self.coordinator.api.status.battery_status))
         self.async_write_ha_state()
 
 
